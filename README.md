@@ -22,7 +22,7 @@
 
 
 
-##                                          Полезные команды, ссылки.
+###                                          Полезные команды, ссылки.
 
 *             [andrey@nix64amd lesson_08_SYSTEMD]$ systemctl cat sshd                        
             
