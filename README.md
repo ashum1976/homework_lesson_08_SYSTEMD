@@ -24,7 +24,7 @@
 
 ##                                          Полезные команды, ссылки.
 
-*         [andrey@nix64amd lesson_08_SYSTEMD]$ systemctl cat sshd                        
+*             [andrey@nix64amd lesson_08_SYSTEMD]$ systemctl cat sshd                        
             
                 # /usr/lib/systemd/system/sshd.service
                 [Unit]
