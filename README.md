@@ -192,12 +192,12 @@
 
         Групировка объектов в systemd
                 
-            **slice  - объект, представляющий иерархию (сервиса / сессии)**
+      **slice  - объект, представляющий иерархию (сервиса / сессии)**
                     
             [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/*.slice     < -------  slice в systemd находятся в этой директории
 
                     
-            **scope - объект в slice, группирующий процессы**
+      **scope - объект в slice, группирующий процессы**
 
                             
             [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/user.slice/user-1000.slice/    <---- scope внутри slice ( на примере пользовательского, user id 1000)
