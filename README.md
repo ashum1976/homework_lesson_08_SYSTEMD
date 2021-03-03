@@ -190,14 +190,14 @@
                             
      [root@nix64amd ~]# systemd-cgtop  --depth  <------ глубина отображения вложений от корня cgroups
 
-Групировка объектов в systemd
+   Групировка объектов в systemd
                 
-  1  **slice  - объект, представляющий иерархию (сервиса / сессии)**
+  1.  **slice  - объект, представляющий иерархию (сервиса / сессии)**
                     
    [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/*.slice     < -------  slice в systemd находятся в этой директории
 
                     
-  2  **scope - объект в slice, группирующий процессы**
+  2.  **scope - объект в slice, группирующий процессы**
 
                             
    [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/user.slice/user-1000.slice/    <---- scope внутри slice ( на примере пользовательского, user id 1000)
