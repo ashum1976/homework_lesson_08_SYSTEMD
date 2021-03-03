@@ -189,7 +189,7 @@
 8.  [root@nix64amd ~]# systemd-cgtop             <----- Аналог top с более простым вариантом отображения используемых ресурсов
      [root@nix64amd ~]# systemd-cgtop  --depth  <--- Глубина отображения вложений от корня cgroups
 
-        Групировка объектов в systemd
+*    Групировка объектов в systemd
                 
       **slice  - объект, представляющий иерархию (сервиса / сессии)**
                     
@@ -207,7 +207,7 @@
             drwxr-xr-x  2 root   root   0 мар  2 08:06 session-2.scope    <---- scope
             drwxr-xr-x  2 root   root   0 мар  2 08:07 session-4.scope    <---- scope
                            
-    cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя 
+            cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя 
                             
 
 ####        Юниты systemd
