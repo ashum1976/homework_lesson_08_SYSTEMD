@@ -171,43 +171,44 @@
                     └─-.slice
                 
                 
-6.               [root@nix64amd ~]# systemd-analyze blame
+6.  [root@nix64amd ~]# systemd-analyze blame
 
-                    21.405s dracut-initqueue.service
-                    19.365s systemd-cryptsetup@luks\x2daae6ec35\x2d0b1b\x2d48cb\x2dbfee\x2d5ef2c680c24e.service
-                    18.087s plymouth-quit-wait.service
-                    17.399s systemd-cryptsetup@luks\x2d11d3998e\x2d534f\x2d4191\x2d8f34\x2d95d917ae2f35.service
-                    10.457s dnf-makecache.service
-                    8.004s udisks2.service
-                    6.484s systemd-cryptsetup@luks\x2d460961c9\x2d95ca\x2d4ad9\x2dbeea\x2d564b275a47c5.service
+    *21.405s dracut-initqueue.service*
+    *19.365s systemd-cryptsetup@luks\x2daae6ec35\x2d0b1b\x2d48cb\x2dbfee\x2d5ef2c680c24e.service*
+    *18.087s plymouth-quit-wait.service*
+    *17.399s systemd-cryptsetup@luks\x2d11d3998e\x2d534f\x2d4191\x2d8f34\x2d95d917ae2f35.service*
+    *10.457s dnf-makecache.service*
+    *8.004s udisks2.service*
+    *6.484s systemd-cryptsetup@luks\x2d460961c9\x2d95ca\x2d4ad9\x2dbeea\x2d564b275a47c5.service*
 
 
-7.                   [root@nix64amd ~]# systemctl list-dependencies             <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
+7.  [root@nix64amd ~]# systemctl list-dependencies             <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
                     
 
                     
-8.                   [root@nix64amd ~]# systemd-cgtop             <-------- Аналог top с более простым вариантом отображения используемых ресурсов
+8.  [root@nix64amd ~]# systemd-cgtop             <-------- Аналог top с более простым вариантом отображения используемых ресурсов
                             
-                            [root@nix64amd ~]# systemd-cgtop  --depth  <------ глубина отображения вложений от корня cgroups
+     [root@nix64amd ~]# systemd-cgtop  --depth  <------ глубина отображения вложений от корня cgroups
 
-                            Групировка объектов в systemd
+Групировка объектов в systemd
                 
-   ..1. **slice  - объект, представляющий иерархию (сервиса / сессии)**
+  1  **slice  - объект, представляющий иерархию (сервиса / сессии)**
                     
-                            ls -l /sys/fs/cgroup/systemd/*.slice     < -------  slice в systemd находятся в этой директории
+   [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/*.slice     < -------  slice в systemd находятся в этой директории
 
                     
-   ..2. **scope - объект в slice, группирующий процессы**
+  2  **scope - объект в slice, группирующий процессы**
 
                             
-                            ls -l /sys/fs/cgroup/systemd/user.slice/user-1000.slice/    <---- scope внутри slice ( на примере пользовательского, user id 1000)
-                             итого 0
-                            .................
-                            .................
-                            drwxr-xr-x  2 root   root   0 мар  2 08:06 session-2.scope    <---- scope
-                            drwxr-xr-x  2 root   root   0 мар  2 08:07 session-4.scope    <---- scope
-                            
-                            cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя 
+   [root@nix64amd ~]# ls -l /sys/fs/cgroup/systemd/user.slice/user-1000.slice/    <---- scope внутри slice ( на примере пользовательского, user id 1000)
+    
+    итого 0
+     .................
+    .................
+    drwxr-xr-x  2 root   root   0 мар  2 08:06 session-2.scope    <---- scope
+    drwxr-xr-x  2 root   root   0 мар  2 08:07 session-4.scope    <---- scope
+                           
+    cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя 
                             
 
 ####        Юниты systemd
