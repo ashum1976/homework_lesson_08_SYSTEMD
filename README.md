@@ -31,42 +31,49 @@
 
 ###                                                             3. Полезные команды, ссылки.
 
-1.              [andrey@nix64amd lesson_08_SYSTEMD]$ systemctl cat sshd   <----- просмотр содержимого файла   выбранного юнита  ( systemd )                      
+1.  
+    **systemctl cat sshd**   <----- просмотр содержимого файла   выбранного юнита  ( systemd )                      
             
-                # /usr/lib/systemd/system/sshd.service
-                [Unit]
-                Description=OpenSSH server daemon
-                Documentation=man:sshd(8) man:sshd_config(5)
-                After=network.target sshd-keygen.target
-                Wants=sshd-keygen.target
+        # /usr/lib/systemd/system/sshd.service
+        [Unit]
+        Description=OpenSSH server daemon
+        Documentation=man:sshd(8) man:sshd_config(5)
+        After=network.target sshd-keygen.target
+        Wants=sshd-keygen.target
 
-                [Service]
-                Type=notify
-                EnvironmentFile=-/etc/crypto-policies/back-ends/opensshserver.config     <----- Тут переменная $CRYPTO_POLICY
-                EnvironmentFile=-/etc/sysconfig/sshd
-                ExecStart=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY
-                ExecReload=/bin/kill -HUP $MAINPID
-                KillMode=process
-                Restart=on-failure
-                RestartSec=42s
+        [Service]
+        Type=notify
+        EnvironmentFile=-/etc/crypto-policies/back-ends/opensshserver.config     <----- Тут переменная $CRYPTO_POLICY
+        EnvironmentFile=-/etc/sysconfig/sshd
+        ExecStart=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY
+        ExecReload=/bin/kill -HUP $MAINPID
+        KillMode=process
+        Restart=on-failure
+        RestartSec=42s
 
-                [Install]
-                WantedBy=multi-user.target
+        [Install]
+        WantedBy=multi-user.target
 
-3.              systemctl daemon-reexec   <----   перечитать конфиг файл /etc/systemd/system.conf, при изменении конфигурации.
+3. 
+    **systemctl daemon-reexec**   <----   перечитать конфиг файл /etc/systemd/system.conf, при изменении конфигурации.
 
-4.              systemctl daemon-reload   <---- при изменении параметров запуска юнита, перечитать все юниты.
+4. 
+    **systemctl daemon-reload**   <---- при изменении параметров запуска юнита, перечитать все юниты.
+
+4.  
+    **systemctl edit --full < _name service_ >**  <--- Будет создан сервис в папке /etc/systemd/service < _name service_ > 
+            
 
 
 5.                                
-                 /etc/systemd/system.conf   <------ параметры конфигурации systemd
+    **/etc/systemd/system.conf**   <------ параметры конфигурации systemd
                     
-                    Для отображения в выводе команды  systemd-cgtop учёта ресурсов включить параметры: 
+        Для отображения в выводе команды  systemd-cgtop учёта ресурсов включить параметры: 
                     
-                    DefaultCPUAccounting=yes
-                    DefaultIOAccounting=yes
-                    DefaultIPAccounting=yes
-                    DefaultBlockIOAccounting=yes
+        DefaultCPUAccounting=yes
+        DefaultIOAccounting=yes
+        DefaultIPAccounting=yes
+        DefaultBlockIOAccounting=yes
                 
                 
                 
@@ -74,9 +81,12 @@
                 
 ####            Man systemd 
 
-1.              man systemd.index       <------ полный man по всем параметрам и значениям Systemd
-2.              man systemd-system.conf  <----- man по параметрам конфигурационного файла /etc/systemd/system.conf
-3.              man systemd.unit               <----- man по типам юнитов
+1.  
+    **man systemd.index**       <------ полный man по всем параметрам и значениям Systemd
+2. 
+    **man systemd-system.conf**  <----- man по параметрам конфигурационного файла /etc/systemd/system.conf
+3.  
+    **man systemd.unit**               <----- man по типам юнитов
 
 
 
@@ -131,12 +141,12 @@
                                     
 3.                [root@nix64amd ~]# systemd-cgls                 <------- состояние системы, дерево юнитов systemd
 
-4.               [root@nix64amd ~]# systemd-analyze  <------ анализ времени загрузки [ time]
+4.   **systemd-analyze**  _<------ анализ времени загрузки [ time]_
 
                     Startup finished in 1.289s (kernel) + 27.636s (initrd) + 46.935s (userspace) = 1min 15.862s
                     graphical.target reached after 46.924s in userspace
 
-5.               [root@nix64amd ~]# systemd-analyze critical-chain             <------- анализ, что грузилось с наибольшей задержкой
+5.   **systemd-analyze critical-chain**   _<------- анализ, что грузилось с наибольшей задержкой_
                 
                     The time after the unit is active or started is printed after the "@" character.
                     The time the unit takes to start is printed after the "+" character.
@@ -171,7 +181,7 @@
                     └─-.slice
                 
                 
-6.  [root@nix64amd ~]# systemd-analyze blame
+6.  **systemd-analyze blame**
 
         21.405s dracut-initqueue.service
         19.365s systemd-cryptsetup@luks\x2daae6ec35\x2d0b1b\x2d48cb\x2dbfee\x2d5ef2c680c24e.service
@@ -182,12 +192,12 @@
         6.484s systemd-cryptsetup@luks\x2d460961c9\x2d95ca\x2d4ad9\x2dbeea\x2d564b275a47c5.service
 
 
-7.  systemctl list-dependencies  <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
+7.  **systemctl list-dependencies**  <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
                     
 
                     
-8.  systemd-cgtop             <----- Аналог top с более простым вариантом отображения используемых ресурсов
-     systemd-cgtop  --depth  <--- Глубина отображения вложений от корня cgroups
+8.  **systemd-cgtop**             <----- Аналог top с более простым вариантом отображения используемых ресурсов
+     **systemd-cgtop**  --depth  <--- Глубина отображения вложений от корня cgroups
 
 *    Групировка объектов в systemd
                 
