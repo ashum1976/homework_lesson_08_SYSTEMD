@@ -496,11 +496,11 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 
 5.  **systemd-delta**          <------ Команда отображает что по юнитам расширено, перенаправлено, замаскировано
 
-[REDIRECTED] /etc/systemd/system/dbus-org.freedesktop.timedate1.service → /usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service
-[EQUIVALENT] /etc/systemd/system/default.target → /usr/lib/systemd/system/default.target
-[MASKED]     /etc/systemd/system/systemd-timedated.service → /usr/lib/systemd/system/systemd-timedated.service
-[EXTENDED]   /usr/lib/systemd/system/systemd-udev-trigger.service → /usr/lib/systemd/system/systemd-udev-trigger.service.d/systemd-udev-trigger-no-reload.conf
-[OVERRIDDEN] /etc/modprobe.d/nvidia-installer-disable-nouveau.conf → /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf
+        [REDIRECTED] /etc/systemd/system/dbus-org.freedesktop.timedate1.service → /usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service
+        [EQUIVALENT] /etc/systemd/system/default.target → /usr/lib/systemd/system/default.target
+        [MASKED]     /etc/systemd/system/systemd-timedated.service → /usr/lib/systemd/system/systemd-timedated.service
+        [EXTENDED]   /usr/lib/systemd/system/systemd-udev-trigger.service → /usr/lib/systemd/system/systemd-udev-trigger.service.d/systemd-udev-trigger-no-reload.conf
+        [OVERRIDDEN] /etc/modprobe.d/nvidia-installer-disable-nouveau.conf → /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf
 
 Файлы /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf и /etc/modprobe.d/nvidia-installer-disable-nouveau.conf идентичны    
 
