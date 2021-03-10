@@ -583,7 +583,57 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 1.  **ps -axf**  <------- просмотр дерева процессов
 
 2.  **systemctl status**   <------- состояние системы, дерево юнитов systemd -----
-                                                                                                                                                   |  
+
+  <details> 
+           
+  <summary>Вывод команды  systemctl status</summary>
+            
+            nix64amd.bgim.local
+            State: running
+            Jobs: 0 queued
+            Failed: 0 units
+            Since: Tue 2021-03-09 07:48:54 +03; 1 day 2h ago
+            CGroup: /
+            ├─user.slice
+            │ ├─user-42.slice
+            │ │ ├─session-c1.scope
+            │ │ │ ├─2913 gdm-session-worker [pam/gdm-launch-environment]
+            │ │ │ ├─3004 /usr/libexec/gdm-x-session --register-session gnome-session --autostart /usr/share/gdm/greeter/autostart
+            │ │ │ ├─3014 /usr/libexec/Xorg vt1 -displayfd 3 -auth /run/user/42/gdm/Xauthority -background none -noreset -keeptty -novtswitch -verbose 3
+            │ │ │ ├─3187 /usr/libexec/gnome-session-binary --autostart /usr/share/gdm/greeter/autostart
+            │ │ │ ├─3207 /usr/bin/gnome-shell
+            │ │ │ ├─3220 ibus-daemon --xim --panel disable
+            │ │ │ ├─3223 /usr/libexec/ibus-dconf
+            │ │ │ ├─3227 /usr/libexec/ibus-x11 --kill-daemon
+            │ │ │ ├─3277 /usr/libexec/gsd-xsettings
+            │ │ │ ├─3288 /usr/libexec/gsd-a11y-settings
+            │ │ │ ├─3297 /usr/libexec/gsd-clipboard
+            │ │ │ ├─3299 /usr/libexec/gsd-color
+            │ │ │ ├─3300 /usr/libexec/gsd-datetime
+            │ │ │ ├─3305 /usr/libexec/gsd-housekeeping
+            │ │ │ ├─3307 /usr/libexec/gsd-keyboard
+            │ │ │ ├─3313 /usr/libexec/gsd-media-keys
+            │ │ │ ├─3319 /usr/libexec/gsd-mouse
+            │ │ │ ├─3325 /usr/libexec/gsd-power
+            │ │ │ ├─3330 /usr/libexec/gsd-print-notifications
+            │ │ │ ├─3331 /usr/libexec/gsd-rfkill
+            │ │ │ ├─3333 /usr/libexec/gsd-screensaver-proxy
+            │ │ │ ├─3339 /usr/libexec/gsd-sharing
+            │ │ │ ├─3346 /usr/libexec/gsd-smartcard
+            │ │ │ ├─3351 /usr/libexec/gsd-sound
+            │ │ │ ├─3354 /usr/libexec/gsd-wacom
+            │ │ │ └─3407 /usr/libexec/ibus-engine-simple
+            │ │ └─user@42.service
+            │ │   ├─xdg-permission-store.service
+            │ │   │ └─3238 /usr/libexec/xdg-permission-store
+            │ │   ├─pulseaudio.service
+            │ │   │ └─2990 /usr/bin/pulseaudio --daemonize=no
+            │ │   ├─init.scope
+            │ │   │ ├─2921 /usr/lib/systemd/systemd --user
+            │ │   │ └─2924 (sd-pam)
+             ............
+ </details>            
+
 3.  **systemctl --failed** <---- просмотр юнитов, запуск которых завершился с ошибкой
 
 <details> 
