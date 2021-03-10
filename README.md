@@ -691,7 +691,7 @@ timer | аналог cron (запуск другого юнита, default - *.s
 Создание свооего сервиса. .timer юниты
 
 
-(Создание .timer юнита )[https://wiki.archlinux.org/index.php/Systemd_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)/Timers_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)]
+[Создание .timer юнита ](https://wiki.archlinux.org/index.php/Systemd_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)/Timers_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9))
 
 
 *-*-* *:*:00
