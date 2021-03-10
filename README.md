@@ -572,6 +572,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
     **man systemd.exec**  <---- man ограничения в systemd.
 5.  
     **man systemd.resource-control**  <---- man Лимиты systemd
+6.  
+    **man systemd.exec**  <---- man ограничения в systemd.
+7.  
+    **man systemd.resource-control**  <---- man Лимиты systemd
 
 
 #####   3.5 Анализ работы, состояния, загрузки в systemd
