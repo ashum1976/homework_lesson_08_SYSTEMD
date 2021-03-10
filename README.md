@@ -588,7 +588,7 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 
 <details> 
            
-  <summary>Вывод команды **systemctl --failed** </summary>
+  <summary>Вывод команды systemctl --failed </summary>
   
         UNIT           LOAD   ACTIVE SUB    DESCRIPTION
         ● kdump.service  loaded failed failed Crash recovery kernel arming
@@ -603,7 +603,11 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 </details>
                                     
 4.  **systemctl show sshd** <------ просмотр полной конфигурации параметров преданных сервису и сгенерированных sustemd для этого сервиса
-                                    
+
+<details> 
+           
+  <summary>Вывод команды  systemctl show sshd </summary>
+
         Type=notify
         Restart=on-failure
         NotifyAccess=main
@@ -626,7 +630,9 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         ..............
         ..............
         .............. 
-                                    
+ </details>
+ 
+ 
 5.  **systemd-cgls**    <------- состояние системы, дерево юнитов systemd
 
 6.  **systemd-analyze**_<------ анализ времени загрузки [ time]_
@@ -635,7 +641,12 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         graphical.target reached after 46.924s in userspace
 
 7.  **systemd-analyze critical-chain**   _<------- анализ, что грузилось с наибольшей задержкой_
-                
+
+
+<details> 
+           
+  <summary>Вывод команды  systemd-analyze critical-chain</summary>
+  
         The time after the unit is active or started is printed after the "@" character.
         The time the unit takes to start is printed after the "+" character.
 
@@ -652,9 +663,15 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
                              └─dbus.service @15.542s
                                 └─basic.target @15.526s
                                    └─sockets.target @15.526s
-                
+</details>           
+
 8.  **systemd-analyze blame**
 
+
+<details> 
+           
+  <summary>Вывод команды  systemd-analyze blame</summary>
+  
         21.405s dracut-initqueue.service
         19.365s systemd-cryptsetup@luks\x2daae6ec35\x2d0b1b\x2d48cb\x2dbfee\x2d5ef2c680c24e.service
         18.087s plymouth-quit-wait.service
@@ -662,7 +679,7 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         10.457s dnf-makecache.service
         8.004s udisks2.service
         6.484s systemd-cryptsetup@luks\x2d460961c9\x2d95ca\x2d4ad9\x2dbeea\x2d564b275a47c5.service
-
+</details>
 
 9.  **systemctl list-dependencies**  <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
                     
