@@ -507,11 +507,11 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 #####   3.2 Мониторинг        
 
 1.  
-                         **systemctl is-active <unit name>**                         <----- Проверка запущен ли юнит
-                         **systemctl is-enabled <unit name>**                    <----- Включен ли юнит для автозагрузки
-                         **systemctl is-failed <unit name>**                 <----- Ошибка  юнита
-                         **systemctl is-system-running**                 <----- Состояние запущеной ситемы systemd (ranning or degraded)
-                         **systemctl reset-failed**                  <----- Сброс состояния ошибки
+        **systemctl is-active <unit name>**                         <----- Проверка запущен ли юнит
+        **systemctl is-enabled <unit name>**                    <----- Включен ли юнит для автозагрузки
+        **systemctl is-failed <unit name>**                 <----- Ошибка  юнита
+        **systemctl is-system-running**                 <----- Состояние запущеной ситемы systemd (ranning or degraded)
+        **systemctl reset-failed**                  <----- Сброс состояния ошибки
                 
 2.  **journalctl -u <unit name>**   <---- Просмотр журнала по выбранному юниту
 
