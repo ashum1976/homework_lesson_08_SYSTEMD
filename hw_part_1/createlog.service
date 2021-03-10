@@ -1,0 +1,10 @@
+[Unit]
+Description=Create log file test.txt
+
+[Service]
+Type=simple
+ExecStart=/vagrant/hw_part_1/genstring_h.sh
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,27 @@
+[Unit]
+Description=Jira Server
+After=network.target
+
+[Service]
+Type=forking
+User=vagrant
+Group=vagrant
+Environment="JRE_HOME=/etc/alternatives/jre"
+ExecStart=/opt/jira/bin/start-jira.sh
+#ExecStop=/opt/jira/bin/stop-jira.sh
+SuccessExitStatus=143
+RestartPreventExitStatus=143
+Restart=on-failure
+
+## Ограничения процесса по нескольким параметрам cgroup 
+#Ограничение виртуальной памяти
+#LimitAS=20M
+#Ограничение по макимальному числу пользовательских процессов
+LimitNPROC=100
+#Ограничение по количеству файловых дискрипторов ( количеству файлов)
+LimitNOFILE=350
+#Ограничение по времени использования CPU
+LimitCPU=3
+
+[Install]
+WantedBy=multi-user.target

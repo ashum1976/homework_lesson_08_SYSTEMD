@@ -1,0 +1,10 @@
+[Unit]
+Description=Log watch, created by script genstring_h.sh
+Requires=createlog.service
+#BindsTo=createlog.service
+#Before=createlog.service
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/logwatch
+ExecStart=/vagrant/hw_part_1/teststring.sh ${log_path} ${alert_word}
