@@ -586,6 +586,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
                                                                                                                                                    |  
 3.  **systemctl --failed** <---- просмотр юнитов, запуск которых завершился с ошибкой
 
+<details> 
+           
+  <summary>Вывод команды **systemctl --failed** </summary>
+  
         UNIT           LOAD   ACTIVE SUB    DESCRIPTION
         ● kdump.service  loaded failed failed Crash recovery kernel arming
         ● mcelog.service loaded failed failed Machine Check Exception Logging Daemon
@@ -596,7 +600,7 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 
         2 loaded units listed. Pass --all to see loaded but inactive units, too.
         To show all installed unit files use 'systemctl list-unit-files'        
-
+</details>
                                     
 4.  **systemctl show sshd** <------ просмотр полной конфигурации параметров преданных сервису и сгенерированных sustemd для этого сервиса
                                     
