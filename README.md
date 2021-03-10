@@ -682,9 +682,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         drwxr-xr-x  2 root   root   0 мар  2 08:07 session-4.scope    <---- scope
                            
     _cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя_
-                            
 
+                            
 #####   Юниты systemd
+
 
 Тип | unit’а | Описание
 target | ничего не описывает, группирует другие юниты
@@ -695,7 +696,9 @@ timer | аналог cron (запуск другого юнита, default - *.s
 
 Создание свооего сервиса. .timer юниты
 
+
 #####  Значения секции [Timer]
+
 
 [Создание .timer юнита ссылка на archlinux.org ](https://wiki.archlinux.org/index.php/Systemd_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)/Timers_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9))
 
