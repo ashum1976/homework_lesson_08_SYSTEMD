@@ -557,7 +557,6 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 7.  **systemctl edit <name service>**  <----- Создание дополнительных парамтров или конфигурации для <name service> . Drop-in  расширение конфига юнита.  
      
         /etc/systemd/system/sshd.service.d/override.conf  <----- создаётся файл с параметрами, дополнительно используемыми в юните. Остальные параметры берутся из настроек "по умолчанию"
-8. 
      
      
 #####   3.4 Man systemd 
