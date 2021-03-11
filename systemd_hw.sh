@@ -118,10 +118,10 @@ systemctl daemon-reload
 if [[ ! -f $jira_source/atlassian-jira-software-8.13.4.tar.gz ]]
         then 
                 curl https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-8.13.4.tar.gz -o $jira_source/atlassian-jira-software-8.13.4.tar.gz 2>&1 > /dev/null
-                tar -xvzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
+                tar -xzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
         else
                 #rm -rf /opt/jira/*
-                tar  -xvzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
+                tar  -xzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
               
 fi
 
