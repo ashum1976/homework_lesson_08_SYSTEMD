@@ -14,8 +14,8 @@ apache1=/vagrant/hw_part_2/port8082.conf
 apache2=/vagrant/hw_part_2/port8083.conf
 var_httpd=/vagrant/hw_part_2/httpd@.service
 jira_service=/vagrant/hw_part_3/jira.service
-yum -y install httpd > /dev/null  
-yum -y install java-11-openjdk.x86_64  > /dev/null            #<---- Установка java для запуска jira, с помощью systemd 
+yum -y install httpd  2>&1 > /dev/null  
+yum -y install java-11-openjdk.x86_64 2>&1  > /dev/null            #<---- Установка java для запуска jira, с помощью systemd 
 setenforce Permissive                                           #<------ Пока  отключаем seLinux
 i=0
 #ДЗ systemd часть первая - Cоздать сервис и unit-файлы для этого сервиса
