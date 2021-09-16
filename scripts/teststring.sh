@@ -6,8 +6,8 @@ if [[ -n "$1" && -n "$2" ]]
           if [[ $? -eq 0 ]]
                         then
                         
-                            echo "security alert" | write vagrant
-                            
+                            echo "security alert" | write andrey
+                            #echo "$(date) security alert" > /installs/alert.txt
                     fi       
     
     else

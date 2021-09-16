@@ -7,7 +7,7 @@
 
 
 
-В системах работающих под управлением systemd, /sbin/init ---> символическая ссылка /sbin/init -> ../lib/systemd/systemd 
+В системах работающих под управлением systemd, /sbin/init ---> символическая ссылка /sbin/init -> ../lib/systemd/systemd
 
 
 
@@ -22,10 +22,10 @@
 
 ###                                          2. ДЗ homework_lesson_08_SYSTEMD
 
-<details> 
-           
+<details>
+
   <summary> Скрипт для запуска ДЗ </summary>
-  
+
         #!/usr/bin/bash
 
         timedatectl set-timezone Europe/Minsk                       #<------ Устанавливаем "родную" таймзону Минск
@@ -33,15 +33,15 @@
         file2=/vagrant/hw_part_1/logwatch.service
         file3=/vagrant/hw_part_1/logwatchtime.timer
         file4=/vagrant/hw_part_1/logwatch
-        file5=/vagrant//hw_part_1genstring_h.sh
+        file5=/vagrant/hw_part_1/genstring_h.sh
         file6=/vagrant/hw_part_1/teststring.sh
-        systemdconf=/etc/systemd/system                             #<---- Каталог где хранятся вайлы сервисов, таймеров 
+        systemdconf=/etc/systemd/system                             #<---- Каталог где хранятся файлы сервисов, таймеров
         apache1=/vagrant/hw_part_2/port8082.conf
         apache2=/vagrant/hw_part_2/port8083.conf
         var_httpd=/vagrant/hw_part_2/httpd@.service
         jira_service=/vagrant/hw_part_3/jira.service
         yum -y install httpd > /dev/null  
-        yum -y install java-11-openjdk.x86_64  > /dev/null          #<---- Установка java для запуска jira, с помощью systemd 
+        yum -y install java-11-openjdk.x86_64  > /dev/null          #<---- Установка java для запуска jira, с помощью systemd
         setenforce Permissive                                       #<---- Пока  отключаем seLinux
         i=0
         #ДЗ systemd часть первая - Cоздать сервис и unit-файлы для этого сервиса
@@ -59,23 +59,23 @@
                     for i in $file{1..3}
                        do
                                cp $i $systemdconf
-                                    
+
                                     if [[ $? -eq 0 ]]
                                             then
                                                     echo "Copy done"
-                                            else 
+                                            else
                                                     echo "Error copy file "
-                                                    
+
                                     fi
                                chmod 644 $systemdconf/$(echo $i | cut -f 4 -d /)
-                        
+
                           done          
                     cp $file4 /etc/sysconfig/
                     systemctl start $(echo $file1 | cut -f 4 -d /) && echo "Запуск генератора ключевого слова выполнен $?"
                     #systemctl start $file3
                     systemctl start  $(echo $file3 | cut -f 4 -d /) && echo "Запуск таймера выполнен $?"
-         
-         else 
+
+         else
                     echo " Проверте наличие конфигурационных файлов или скриптов !!!"
         fi
 
@@ -87,9 +87,9 @@
         echo "Start"
 
         if [[ -f "$apache1" && -f "$apache2" && -f "$var_httpd" ]]
-                
+
                 then
-                        
+
                         cp $apache1  /etc/httpd/conf/
                         cp $apache2  /etc/httpd/conf/
                         cp $var_httpd $systemdconf
@@ -103,7 +103,7 @@
                                 then
                                         systemctl daemon-reload
                                         systemctl restart httpd@$(echo $apache1 | cut -f 4 -d / | cut -f 1 -d .).service
-                                                                
+
                                else
                                         # Если не запущены, то стартуем их
                                        systemctl start httpd@$(echo $apache1 | cut -f 4 -d / | cut -f 1 -d .).service &&  echo "Старт первого экземпляра  httpd@$(echo $apache1 | cut -f 4 -d / | cut -f 1 -d .) экземпляра #выполнен"
@@ -117,14 +117,14 @@
                                         # Если не запущены, то стартуем их
                                         systemctl start httpd@$(echo $apache2 | cut -f 4 -d / | cut -f 1 -d .).service &&  echo "Старт первого экземпляра  httpd@$(echo $apache2 | cut -f 4 -d / | cut -f 1 -d .) экземпляра #выполнен"
                         fi
-                        
+
                          # Выводим результат запуска экземпляров, httpd стартанут на разных портах (8082 и 8083)               
                         ss -ntlp | grep 808*
-                            
-                else 
+
+                else
                         echo " Нет конфигурационных файлов "
                         echo "Запуск задачи невозможен"
-                        
+
         fi                
 
         echo ""
@@ -142,13 +142,13 @@
         systemctl daemon-reload
 
         if [[ ! -f $jira_source/atlassian-jira-software-8.13.4.tar.gz ]]
-                then 
+                then
                         curl https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-8.13.4.tar.gz -o $jira_source/atlassian-jira-software-8.13.4.tar.gz 2>&1 > /dev/null
                         tar -xvzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
                 else
                         #rm -rf /opt/jira/*
                         tar  -xvzf $jira_source/atlassian-jira-software-8.13.4.tar.gz -C /opt/jira --strip 1
-                    
+
         fi
 
         if [[ -f /opt/jira/bin/start-jira.sh ]]
@@ -158,20 +158,20 @@
                         echo "для запуска сервиса jira через systemd  не найден стартовый скрипт"
 
         fi
-  
-  
+
+
 
 </details>
 
 ####                            2.1 ДЗ часть 1. Сервис отслеживающий лог файл
 
 
-##### Генерируем ключевое слово, 40 строчек, с задержкой 10 сек. 
+#### Генерируем ключевое слово, 40 строчек, с задержкой 10 сек.
 
-**Сервис генерации лог файла, который вызывает скрипт генерации посредством systemd**
+**Сервис генерации лог файла, который вызывает скрипт генерации посредством systemd:**
 
-<details> 
-           
+<details>
+
   <summary> Сервис генерации лог файла </summary>
 
             [Unit]
@@ -187,11 +187,11 @@
 
 </details>
 
-<details> 
-           
+<details>
+
   <summary> Скрипт генерации ключевого слова </summary>
 
-  
+
             #!/usr/bin/bash
 
             sleep 5
@@ -199,26 +199,26 @@
             testlogfile=/var/log/test
             while [[ $aaa -lt 20 ]]
                 do
-                    
+
                     #/usr/bin/logger "security alerts"
-                    echo "security alert $aaa" > $testlogfile 
+                    echo "security alert $aaa" > $testlogfile
                     echo "test string" >> $testlogfile
                     sleep 10
                     (( aaa++ ))
             done
 </details>
 
-            
- 
-##### Проверка лог файла  
+
+
+#### Проверка лог файла  
 
 Проверяем лог файл (/var/log/test), созданный предыдущим скриптом, на наличие ключевого слова. Проверка выполняется путём запуска .timer сервиса, по расписанию каждые 30 сек.
 
-**Таймер активации сервиса проверки**
+**Таймер активации сервиса проверки:**
 
-<details> 
+<details>
     <summary> Таймер активации проверки </summary>
-    
+
             [Unit]
             Description=Timer for service logwatch
 
@@ -229,14 +229,14 @@
 
             [Install]
             WantedBy=timers.target
-    
+
 </details>
 
-**Сервис проверки лог файла**
+**Сервис проверки лог файла:**
 
-<details> 
+<details>
     <summary> Сервис проверки лог файла </summary>
-            
+
             Unit]
             Description=Log watch, created by script genstring_h.sh
             Requires=createlog.service
@@ -250,11 +250,11 @@
 </details>
 
 
-**Скрипт проверки ключевого слова в лог файле**
+**Скрипт проверки ключевого слова в лог файле:**
 
- <details> 
+ <details>
             <summary> Скрипт проверки ключевого слова в лог файле </summary>           
-            
+
             #!/usr/bin/bash
 
             if [[ -n "$1" && -n "$2" ]]
@@ -262,26 +262,20 @@
                     tail -n2 $1 | grep -i $2
                     if [[ $? -eq 0 ]]
                                     then
-                                    
+
                                         echo "security alert" | write vagrant
-                                        
+
                                 fi       
-                
+
                 else
                     echo "Не заданы путь или ключевая фраза для поиска в конфиг файле"
-                    
+
             fi
 </details>
 
 
 
-
-
-
-
-
-
-####                            2.2 ДЗ часть 2. Экземпляры сервиса httpd 
+####                            2.2 ДЗ часть 2. Экземпляры сервиса httpd
 
 
 
@@ -315,9 +309,9 @@
 
 **Конфигурация экземпляра для запуска на порту 8082:**
 
-<details> 
+<details>
     <summary> Сервис проверки лог файла </summary>
-    
+
             DefaultRuntimeDir /run/httpd/instance-${HTTPD_INSTANCE}
             PidFile /run/httpd/instance-${HTTPD_INSTANCE}.pid
 
@@ -412,16 +406,16 @@
             EnableSendfile on
 
 </details>
-            
+
 
 
 
 ####                            2.3 Д3 часть 3.  Сервис jira
 
-**Конфигураци юнита, для запуска jira сервиса посредством systemd**
+**Конфигураци юнита, для запуска jira сервиса посредством systemd:**
 
-<details> 
-           
+<details>
+
   <summary> Конфигурация systemd юнита jira.service </summary>
 
                 [Unit]
@@ -439,7 +433,7 @@
                 RestartPreventExitStatus=143
                 Restart=on-failure
 
-                ## Ограничения процесса по нескольким параметрам cgroup 
+                ## Ограничения процесса по нескольким параметрам cgroup
                 #Ограничение виртуальной памяти
                 #LimitAS=20M
                 #Ограничение по макимальному числу пользовательских процессов
@@ -455,119 +449,170 @@
 </details>
 
 SuccessExitStatus=143         *<---- Указываем systemd, что код выхода 143 правильный*
+
 RestartPreventExitStatus=143  *<---- Предотвращаем перезапуск сервиса при появлении такого кода выхода, который возникает при остановке jira сервиса*
+
 Restart=on-failure            *<---- При возникновении ошибки, в виде неверного кода выхода ( для нормальных приложение он = 0, но не для java, где он равен 128+15(SIGTERM) = 143), перезапустить наше приложение*
 
+
 ss -t4unpl - запущенные сервисы на портах
+
 lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному сервису httpd, порты в статусе LISTEN, IPv4 (для включения IPv6 - i6 или без ключа -i тогда оба протокола)
 
 **curl https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-7.11.2.tar.gz -o /home/vagrant/atlassian-jira-software-8.13.4.tar.gz**
 
 
-Ограничения ресурсов 
-    
-    man systemd-exec
-    
+
 
 ###                                          3. Просмотр, управление, команды юнитов systemd
 
-#####   3.1 Управление юнитами
+#### <span style="color:blue"> Полезные инструменты, которые предоставляет systemd.</span>
+
+  <span style="color:blue"> _localectl_</span> - **централизованное управление языковыми и региональными параметрами.**
+
+    Вывод команды **"localectl":**  
+
+      System Locale — текущая системная локаль, т. е. набор правил, определяющих язык системы, формат денежных единиц, часовой пояс и т. д.
+      VC Keymap — раскладка клавиатуры для консоли.
+      X11 Layout — раскладки клавиатуры, используемые в графической системе.
+      X11 Model — тип/модель клавиатуры
+      X11 Variant — варианты раскладки клавиатуры, используемые в графической системе. Примеры: русская машинописная, DVORAK, QUERTY и т. д.
+      X11 Options — опции, в том числе горячие клавиши для переключения раскладки и отображение текущего состояния с помощью индикатора Scroll Lock.
+
+  <span style="color:blue">_timedatectl_</span> - **управление настройками времени и даты**
+
+    Вывод команды **"timedatectl":**  
+
+      Local time — местное время.  
+      Universal time — UTC или всемирное координированное время. Отправная точка для отсчета часовых поясов.  
+      RTC time — время в аппаратных часах ПК или сервера.  
+      Time Zone — часовой пояс.  
+      Network time on — показывает, включен ли ntp-клиент, входящий в состав systemd. Даже если он отключен, синхронизация может выполняться сторонними клиентами.  
+      NTP synchronized — показывает, синхронизировано ли время с ntp-сервером.  
+      RTC in local TZ — показывает, какое время хранится в аппаратных часах: локальное или всемирное. Таким образом, yes означает локальное время, no — всемирное.  
+
+<span style="color:blue"> _loginctl_</span> - **Просмотр и упрвление сессиями пользователей**
+
+
+
+####   3.1 Управление юнитами
+
 1.  
-    **systemctl cat sshd**   <----- просмотр содержимого файла   выбранного юнита  ( systemd )                      
+    systemctl cat sshd   <----- просмотр содержимого файла   выбранного юнита  ( systemd )                      
 
-2. 
-    **systemctl daemon-reexec**   <----   перечитать конфиг файл /etc/systemd/system.conf, при изменении конфигурации.
+2.
+    systemctl daemon-reexec   <----   перечитать конфиг файл /etc/systemd/system.conf, при изменении конфигурации.
 
-3. 
-    **systemctl daemon-reload**   <---- при изменении параметров запуска юнита, перечитать все юниты.
+3.
+    systemctl daemon-reload   <---- при изменении параметров запуска юнита, перечитать все юниты.
 
 4.  
-    
 
-######      3.1.2 Просмотр  юнитов ( systemctl --list-*****)
 
-            1.    systemctl list-timers   <------- Список загруженных таймеров ( расписание как в кроне)
-            2.    systemctl list-dependencies  <------ Рекурсивно отображает требуемые юниты
-            3.    systemctl list-jobs                     <------  Список работ (jobs)
-            4.    systemctl list-machines              <------ Список локальных хостов или контейнеров
-            5.    systemctl list-sockets                   <------ Список текущих загруженных сокет юнитов
-            6.    systemctl list-unit-files                    <------ Список инсталлированных файлов юнитов
-            7.    systemctl list-units                              <------ Список текущих загруженных юнитов 
+#####   3.1.1 Просмотр  юнитов ( systemctl --list-*****)
 
-5.  **systemd-delta**          <------ Команда отображает что по юнитам расширено, перенаправлено, замаскировано
+        1.    systemctl list-timers   <------- Список загруженных таймеров ( расписание как в кроне)
+        2.    systemctl list-dependencies  <------ Рекурсивно отображает требуемые юниты
+        3.    systemctl list-jobs                     <------  Список работ (jobs)
+        4.    systemctl list-machines              <------ Список локальных хостов или контейнеров
+        5.    systemctl list-sockets                   <------ Список текущих загруженных сокет юнитов
+        6.    systemctl list-unit-files                    <------ Список инсталлированных файлов юнитов
+        7.    systemctl list-units                              <------ Список текущих загруженных юнитов
+
+#####   3.1.2 **systemd-delta**          <------ Команда отображает что по юнитам расширено, перенаправлено, замаскировано
 
         [REDIRECTED] /etc/systemd/system/dbus-org.freedesktop.timedate1.service → /usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service
+
         [EQUIVALENT] /etc/systemd/system/default.target → /usr/lib/systemd/system/default.target
+
         [MASKED]     /etc/systemd/system/systemd-timedated.service → /usr/lib/systemd/system/systemd-timedated.service
+
         [EXTENDED]   /usr/lib/systemd/system/systemd-udev-trigger.service → /usr/lib/systemd/system/systemd-udev-trigger.service.d/systemd-udev-trigger-no-reload.conf
+
         [OVERRIDDEN] /etc/modprobe.d/nvidia-installer-disable-nouveau.conf → /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf
+        Файлы /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf и /etc/modprobe.d/nvidia-installer-disable-nouveau.conf идентичны    
 
-Файлы /usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf и /etc/modprobe.d/nvidia-installer-disable-nouveau.conf идентичны    
+___        
 
-#####   3.2 Мониторинг        
+####   3.2 Мониторинг        
 
-1.  
         **systemctl is-active <unit name>**                         <----- Проверка запущен ли юнит
         **systemctl is-enabled <unit name>**                    <----- Включен ли юнит для автозагрузки
         **systemctl is-failed <unit name>**                 <----- Ошибка  юнита
         **systemctl is-system-running**                 <----- Состояние запущеной ситемы systemd (ranning or degraded)
         **systemctl reset-failed**                  <----- Сброс состояния ошибки
-                
+
 2.  **journalctl -u <unit name>**   <---- Просмотр журнала по выбранному юниту
 
+3.  **journalctl -p 3 -b**  <---- Приведённая команда покажет все сообщения об ошибках, имевших место в системе.
 
-#####   3.3 Файлы конфигурации
-            
-1. 
+	где "-p" фильтрация по уровню ошибки
+
+		уровни ошибок:
+
+			0 — EMERG (система неработоспособна);
+			1 — ALERT (требуется немедленное вмешательство);
+			2 — CRIT (критическое состояние);
+			3 — ERR (ошибка);
+			4 — WARNING (предупреждение);
+			5 — NOTICE (всё нормально, но следует обратить внимание);
+			6 — INFO (информационное сообщение);
+			7 —DEBUG (отложенная печать).
+___
+
+####   3.3 Файлы конфигурации
+
+1.
     **/etc/systemd/system.conf**   <------ параметры конфигурации systemd
-                    
-            Для отображения в выводе команды  systemd-cgtop учёта ресурсов включить параметры: 
-                        
+
+            Для отображения в выводе команды  systemd-cgtop учёта ресурсов включить параметры:
+
             DefaultCPUAccounting=yes
             DefaultIOAccounting=yes
             DefaultIPAccounting=yes
             DefaultBlockIOAccounting=yes
 
-2. 
+2.
     **/etc/systemd/system**  <---- В этом каталоге хранятся все юнит файлы которые создаются вручную. **имеет наивысший приоритет перед остальными директориями**
-    
+
 3.  **/etc/systemd/system/*.wants**    <---- в каталога .wants симлинки при включении сервиса командой systemctl enable
-    
+
     ls -la  /etc/systemd/system/multi-user.target.wants/sshd.service
-            
+
     _/etc/systemd/system/multi-user.target.wants/sshd.service -> /usr/lib/systemd/system/sshd.service_
-    
-4.  **/etc/sysconfig/**  <---- Директория где хранятся переменные, используемые в юнит-файлах 
+
+4.  **/etc/sysconfig/**  <---- Директория где хранятся переменные, используемые в юнит-файлах
 
 5.  **systemctl cat sshd**   <---- Просмотреть содержимое юнит-файла
-    
+
     _[Unit]_
     _Description=OpenSSH server daemon_
     _Documentation=man:sshd(8) man:sshd_config(5)_
     _After=network.target sshd-keygen.target_
     _Wants=sshd-keygen.target_
-    
+
     _[Service]_
     _Type=notify_
     _EnvironmentFile=-/etc/crypto-policies/back-ends/opensshserver.config_        
-    _EnvironmentFile=-/etc/sysconfig/sshd__                                                             <---- Переменные для service sshd
-    
+    _EnvironmentFile=-/etc/sysconfig/sshd__                             <---- Переменные для service sshd
+
 6.   **systemctl edit --full <name service>**  <--- Будет создан сервис в папке /etc/systemd/service/< _name service_ > Модификация юнита, на базе существующего. Будет использоваться вновь созданный юнит
 
 7.  **systemctl edit <name service>**  <----- Создание дополнительных парамтров или конфигурации для <name service> . Drop-in  расширение конфига юнита.  
-     
+
         /etc/systemd/system/sshd.service.d/override.conf  <----- создаётся файл с параметрами, дополнительно используемыми в юните. Остальные параметры берутся из настроек "по умолчанию"
-     
-     
-#####   3.4 Man systemd 
+
+___
+
+####   3.4 Man systemd
 
 1.  
     **man systemd.index**       <------ полный man по всем параметрам и значениям Systemd
-2. 
+2.
     **man systemd-system.conf**  <----- man по параметрам конфигурационного файла /etc/systemd/system.conf
 3.  
     **man systemd.unit**               <----- man по типам юнитов
-4. 
+4.
     **man systemd.exec**  <---- man ограничения в systemd.
 5.  
     **man systemd.resource-control**  <---- man Лимиты systemd
@@ -576,17 +621,19 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 7.  
     **man systemd.resource-control**  <---- man Лимиты systemd
 
+___
 
-#####   3.5 Анализ работы, состояния, загрузки в systemd
+
+####   3.5 Анализ работы, состояния, загрузки в systemd
 
 1.  **ps -axf**  <------- просмотр дерева процессов
 
 2.  **systemctl status**   <------- состояние системы, дерево юнитов systemd -----
 
-  <details> 
-           
+  <details>
+
   <summary>Вывод команды  systemctl status</summary>
-            
+
             nix64amd.bgim.local
             State: running
             Jobs: 0 queued
@@ -635,10 +682,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 
 3.  **systemctl --failed** <---- просмотр юнитов, запуск которых завершился с ошибкой
 
-<details> 
-           
+<details>
+
   <summary>Вывод команды systemctl --failed </summary>
-  
+
         UNIT           LOAD   ACTIVE SUB    DESCRIPTION
         ● kdump.service  loaded failed failed Crash recovery kernel arming
         ● mcelog.service loaded failed failed Machine Check Exception Logging Daemon
@@ -650,11 +697,11 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         2 loaded units listed. Pass --all to see loaded but inactive units, too.
         To show all installed unit files use 'systemctl list-unit-files'        
 </details>
-                                    
+
 4.  **systemctl show sshd** <------ просмотр полной конфигурации параметров преданных сервису и сгенерированных sustemd для этого сервиса
 
-<details> 
-           
+<details>
+
   <summary>Вывод команды  systemctl show sshd </summary>
 
         Type=notify
@@ -678,10 +725,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         ..............
         ..............
         ..............
-        .............. 
+        ..............
  </details>
- 
- 
+
+
 5.  **systemd-cgls**    <------- состояние системы, дерево юнитов systemd
 
 6.  **systemd-analyze**_<------ анализ времени загрузки [ time]_
@@ -692,10 +739,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 7.  **systemd-analyze critical-chain**   _<------- анализ, что грузилось с наибольшей задержкой_
 
 
-<details> 
-           
+<details>
+
   <summary>Вывод команды  systemd-analyze critical-chain</summary>
-  
+
         The time after the unit is active or started is printed after the "@" character.
         The time the unit takes to start is printed after the "+" character.
 
@@ -717,10 +764,10 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
 8.  **systemd-analyze blame**
 
 
-<details> 
-           
+<details>
+
   <summary>Вывод команды  systemd-analyze blame</summary>
-  
+
         21.405s dracut-initqueue.service
         19.365s systemd-cryptsetup@luks\x2daae6ec35\x2d0b1b\x2d48cb\x2dbfee\x2d5ef2c680c24e.service
         18.087s plymouth-quit-wait.service
@@ -730,30 +777,30 @@ lsof -nP -i4 | grep httpd | grep LISTEN - отбор по запущенному
         6.484s systemd-cryptsetup@luks\x2d460961c9\x2d95ca\x2d4ad9\x2dbeea\x2d564b275a47c5.service
 </details>
 
-9.  **systemctl list-dependencies**  <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный). 
-                    
+9.  **systemctl list-dependencies**  <------- дерево юнитов условие запуска которых выполняется (зелёный цвет), для тех у кого не выполняется (красный).
+
 10. **systemd-cgtop**          <----- Аналог top с более простым вариантом отображения используемых ресурсов
             **systemd-cgtop --depth**  <--- Глубина отображения вложений от корня cgroups
 
     Групировка объектов в systemd
-                
+
     **slice  - объект, представляющий иерархию (сервиса / сессии)**
-                    
+
     _ls -l /sys/fs/cgroup/systemd/*.slice     < -------  slice в systemd находятся в этой директории_
-                    
+
     **scope - объект в slice, группирующий процессы**
-                            
+
     _ls -l /sys/fs/cgroup/systemd/user.slice/user-1000.slice/    <---- scope внутри slice ( на примере пользовательского, user id 1000)_
-    
+
         итого 0
         .................
         .................
         drwxr-xr-x  2 root   root   0 мар  2 08:06 session-2.scope    <---- scope
         drwxr-xr-x  2 root   root   0 мар  2 08:07 session-4.scope    <---- scope
-                           
+
     _cat  /sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-4.scope/tasks   <---- задачи запущенные в этой сессии пользователя_
 
-                            
+
 #####   Юниты systemd
 
 
@@ -773,25 +820,25 @@ timer | аналог cron (запуск другого юнита, default - *.s
 [Создание .timer юнита ссылка на archlinux.org ](https://wiki.archlinux.org/index.php/Systemd_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)/Timers_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9))
 
 
-                    
+
     DOW YYYY-MM-DD HH:MM:SS <---- DOW день недели, необязательный параметр,  Год-Месяц-День Часы:Минуты:Секунды
-      
+
                 *-*-* *:*:30 <---- Параметры срабатывания расписания, каждые 30 секунд
 
   **OnActiveSec=          :** Время срабатывания таймера задаётся относительно момента активации таймера.
 
   **OnBootSec=            :** Время срабатывания таймера задаётся относительно момента загрузки системы.
-  
+
   **OnStartupSec=         :** Время срабатывания таймера определяется относительно первого запуска менеджера служб. В случае с системными таймерами это очень похоже на OnBootSec= так как системный менеджер служб обычно запускается при загрузке очень рано. Подобные таймеры, преимущественно, ценны при использовании их с привязкой к менеджерам служб, относящимся к отдельным пользователям, так как такие менеджеры служб обычно запускаются только при первом входе пользователя в систему, а не в процессе загрузки системы.
-  
+
   **OnUnitActiveSec=      :** Время срабатывания таймера задаётся относительно того времени, когда таймер, который должен быть активирован, был активирован в последний раз.
-  
+
   **OnUnitInactiveSec=    :** Время срабатывания таймера определяется относительно того времени, когда таймер, который должен быть активирован, был в последний раз деактивирован.
-  
+
   **OnCalendar=           :**	Такой таймер привязан к реальному времени и ориентируется на события календаря. Подробности о синтаксисе описаний событий календаря можно найти в справке по systemd.time(7). В остальном же семантика описаний таких таймеров похожа на таймеры OnActiveSec=. Это — именно такие таймеры systemd, которые сильнее всего похожи на те механизмы, которые применяются при настройке заданий cron.
-                
-                
-                        
+
+
+
 
 ####                      Значения секции [Service]
 
@@ -808,7 +855,7 @@ timer | аналог cron (запуск другого юнита, default - *.s
 **Requires=         :** <---- *В этой директиве перечислены все юниты, от которых зависит этот юнит (служба или устройство). Перечисленные здесь юниты также должны успешно активироваться, иначе запуска юнита не будет. Эти юниты запускаются параллельно с текущим по умолчанию, если не указаны Before= или After=.*
 
 **BindsTo=          :** <---- *Эта директива аналогична Requires=, но приводит к остановке запускаемого юнита, когда юнит от которого он зависил завершается.*
-        
+
     Пример: Юнит logwatch.service, зависит от запуска createlog.service, и по окончании работы юнита  createlog.service, так же будет остановлен и logwatch.service
             [Unit]
             Description=Log watch, created by script genstring_h.sh
@@ -822,13 +869,13 @@ timer | аналог cron (запуск другого юнита, default - *.s
 2.  **man systemd.exec**  <---- man ограничения в systemd.
 3.  **man systemd.resource-control**  <---- man Лимиты systemd
 
-Ограничения systemd используются в секции 
-     
-    [Service] 
+Ограничения systemd используются в секции
+
+    [Service]
     MemoryLimit=2G
-    
+
  _/etc/systemd/system.conf_ <---- Значения по ограничениям сервисов, по умолчанию, можно задать в соответствующих строках файла:
-    
+
     #DefaultLimitCPU=
     #DefaultLimitFSIZE=
     #DefaultLimitDATA=
@@ -845,7 +892,3 @@ timer | аналог cron (запуск другого юнита, default - *.s
     #DefaultLimitNICE=
     #DefaultLimitRTPRIO=
     #DefaultLimitRTTIME=
-    
-
-
-

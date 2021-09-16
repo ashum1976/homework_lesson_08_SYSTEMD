@@ -3,7 +3,7 @@
 sleep 5
 aaa=0
 testlogfile=/var/log/test
-while [[ $aaa -lt 10 ]]
+while [[ $aaa -lt 50 ]]
     do
         
         #/usr/bin/logger "security alerts"
