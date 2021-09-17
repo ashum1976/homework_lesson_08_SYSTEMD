@@ -681,6 +681,13 @@ ___
  </details>            
 
 3.  **systemctl --failed** <---- просмотр юнитов, запуск которых завершился с ошибкой
+    **sudo systemctl list-machines**  <---- Информация о хосте, статус юнитов, количество jobs
+
+            [andrey@SrvHomeAMD homework_lesson08_SYSTEMD]$ sudo systemctl list-machines
+            NAME                            STATE         FAILED JOBS
+            ● SrvHomeAMD.localdomain (host) degraded      1      0
+
+            1 machines listed.
 
 <details>
 
@@ -804,10 +811,25 @@ ___
 #####   Юниты systemd
 
 
-Тип | unit’а | Описание
-target | ничего не описывает, группирует другие юниты
-service | аналог демона (или то, что можно запустить)
-timer | аналог cron (запуск другого юнита, default - *.se
+Тип unit’а Описание:
+
+- target --  ничего не описывает, группирует другие юниты  
+      так же это уровни загрузки:  
+        <span style="color:green"> _multi-user.target_</span> - текстовый уровень ( init 3 уровень )  
+        <span style="color:green"> _graphical.target_</span> - графический уровень ( init 5 уровень)  
+    возможность загружаться в target юнит, определяется наличием параметра <span style="color:red"> _"AllowIsolate=yes"_</span> в файле конфигурации юнита
+
+        [Unit]
+        Description=Multi-User System
+        Documentation=man:systemd.special(7)
+        Requires=basic.target
+        Conflicts=rescue.service rescue.target
+        After=basic.target rescue.service rescue.target
+        AllowIsolate=yes
+
+
+- service --  аналог демона (или то, что можно запустить)
+- timer -- аналог cron (запуск другого юнита, default - *.se
 
 Создание свооего сервиса. .service юниты
 
